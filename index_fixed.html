@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>Nurse Skills Georgia</title>
+<link id="fontlink" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+Georgian:wght@400;500;600;700&family=Noto+Serif+Georgian:wght@500;700;800&display=swap">
+<style id="appstyle">
+/* Layout: ward-chart page. Top bar with tabs, wide reading column, one dark patient-monitor panel as the single bold moment. */
+:root{
+  --bg:#eef2f1; --surface:#ffffff; --ink:#10282b; --muted:#567073; --line:#d3dedc;
+  --accent:#0b6e6e; --on-accent:#ffffff; --accent-soft:#dcefed;
+  --signal:#c4342a; --signal-soft:#fbe6e3;
+  --amber:#8f5a00; --amber-soft:#fbefd5;
+  --ok:#1b7443; --ok-soft:#ddf2e5;
+  --mon-bg:#0a1517; --mon-line:#1f3a3e; --mon-ink:#d9ecea; --mon-dim:#6f9296;
+  --f-display:'Noto Serif Georgian',Georgia,serif;
+  --f-body:'Noto Sans Georgian',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1517; --surface:#122124; --ink:#e3eeed; --muted:#93abad; --line:#253b3e;
+  --accent:#3fb8b0; --on-accent:#04211f; --accent-soft:#12383a;
+  --signal:#ff7d70; --signal-soft:#3b1b19;
+  --amber:#e9b34e; --amber-soft:#33270f;
+  --ok:#62d28e; --ok-soft:#10301e; --mon-bg:#060e10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1517; --surface:#122124; --ink:#e3eeed; --muted:#93abad; --line:#253b3e;
+  --accent:#3fb8b0; --on-accent:#04211f; --accent-soft:#12383a;
+  --signal:#ff7d70; --signal-soft:#3b1b19;
+  --amber:#e9b34e; --amber-soft:#33270f;
+  --ok:#62d28e; --ok-soft:#10301e; --mon-bg:#060e10; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;padding-inline:16px}
+*{box-sizing:border-box}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;line-height:1.25;text-wrap:balance}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1040px;margin-inline:auto}
+.app{display:flex;flex-direction:column;gap:24px;padding-block:0 48px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px 0}
+.top-in{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:6px}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{flex:none;color:var(--accent)}
+.brand b{font-family:var(--f-display);font-size:18px;font-weight:800;letter-spacing:.01em}
+.brand small{display:block;color:var(--muted);font-size:12px;line-height:1.2}
+.chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{font-size:12px;font-weight:600;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);white-space:nowrap}
+.chip.t{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;border-bottom:3px solid transparent;padding:10px 12px 9px;font-weight:600;font-size:14px;color:var(--muted);white-space:nowrap;border-radius:0}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab.er[aria-current="page"]{border-bottom-color:var(--signal)}
+.tab .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--signal);margin-inline-end:7px;vertical-align:middle}
+.tab.push{margin-inline-start:auto}
+
+/* generic */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);font-weight:600;font-size:14px}
+.btn:hover{filter:brightness(1.07)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.warn{background:var(--signal);border-color:var(--signal);color:#fff}
+.btn.sm{padding:6px 11px;font-size:13px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.pill.r{background:var(--signal-soft);color:var(--signal)}
+.pill.a{background:var(--amber-soft);color:var(--amber)}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sec-h h2{font-size:26px;font-weight:700}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:stretch;padding-top:24px}
+.hero-copy{display:flex;flex-direction:column;gap:16px;justify-content:center;min-width:0}
+.hero h1{font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-.01em}
+.hero p.lead{font-size:16px;color:var(--muted);max-width:46ch}
+.mon{background:var(--mon-bg);color:var(--mon-ink);border-radius:12px;padding:16px;border:1px solid var(--mon-line);display:flex;flex-direction:column;gap:12px;min-width:0}
+.mon-head{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:11px;color:var(--mon-dim);letter-spacing:.06em;text-transform:uppercase}
+.ecg{width:100%;height:96px;display:block}
+.ecg path{fill:none;stroke:#52e0a2;stroke-width:2;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:900;animation:sweep 4s linear infinite}
+@keyframes sweep{from{stroke-dashoffset:900}to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.ecg path{animation:none;stroke-dasharray:none}}
+.vitals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.vit{border:1px solid var(--mon-line);border-radius:8px;padding:8px 10px;min-width:0}
+.vit span{display:block;font-family:var(--f-mono);font-size:10.5px;color:var(--mon-dim);letter-spacing:.06em}
+.vit b{display:block;font-family:var(--f-mono);font-size:clamp(20px,4.5vw,28px);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vit.ok b{color:#52e0a2}.vit.warn b{color:#f2c14e}.vit.crit b{color:#ff7d70}
+
+.areas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.area{text-align:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.area:hover{border-color:var(--accent)}
+.area h3{font-size:17px}
+.area .n{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.area.er{border-color:var(--signal)}
+.area.er .n{color:var(--signal)}
+
+/* item cards */
+.item{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.item h3{font-size:19px}
+.item .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.item img.pic{width:100%;max-height:340px;object-fit:contain;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:start;width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-weight:500}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt i{flex:none;font-style:normal;font-family:var(--f-mono);font-weight:600;width:24px;height:24px;border-radius:6px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px}
+.opt.good{background:var(--ok-soft);border-color:var(--ok)}
+.opt.bad{background:var(--signal-soft);border-color:var(--signal)}
+.opt:disabled{cursor:default;color:inherit}
+.fb{border-radius:8px;padding:12px 14px;font-size:14px}
+.fb.good{background:var(--ok-soft);border:1px solid var(--ok)}
+.fb.bad{background:var(--signal-soft);border:1px solid var(--signal)}
+.search{width:100%;max-width:340px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.empty{border:1px dashed var(--line);border-radius:10px;padding:28px;text-align:center;color:var(--muted)}
+
+/* simulator */
+.simbar{background:var(--mon-bg);color:var(--mon-ink);border-radius:12px;border:1px solid var(--mon-line);padding:16px;display:flex;flex-direction:column;gap:12px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:10px}
+.tile{text-align:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.tile:hover{border-color:var(--accent)}
+.tile b{font-size:15px}
+.tile small{color:var(--muted);font-size:12px;font-weight:600}
+.tile.set{border-color:var(--accent);background:var(--accent-soft)}
+.tile.set small{color:var(--accent)}
+.patient{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.patient img{width:100%;max-height:300px;object-fit:contain;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
+.rev{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:8px;border:1px solid var(--line);font-size:13.5px}
+.rev.good{background:var(--ok-soft);border-color:var(--ok)}
+.rev.bad{background:var(--signal-soft);border-color:var(--signal)}
+
+/* dialog */
+.scrim{position:fixed;inset:0;background:rgba(5,15,17,.6);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.scrim[hidden]{display:none}
+.dlg{background:var(--surface);color:var(--ink);border-radius:12px;border:1px solid var(--line);width:100%;max-width:520px;max-height:88vh;overflow:auto;padding:22px;display:flex;flex-direction:column;gap:14px}
+.dlg h3{font-size:20px}
+.choice{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);cursor:pointer;font-weight:500;font-size:14px}
+.choice:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.choice input{margin-top:4px}
+
+/* forms */
+label.f{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600;color:var(--muted)}
+.in{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-weight:400;font-size:14px}
+textarea.in{min-height:84px;resize:vertical}
+.draftbar{position:sticky;bottom:env(safe-area-inset-bottom,0px);z-index:15;background:var(--ink);color:var(--bg);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.draftbar .btn{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+.draftbar .btn.ghost{background:transparent;color:var(--bg);border-color:var(--bg)}
+.mini{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.mini>div:first-child{min-width:0;flex:1 1 220px}
+.mini b{display:block;overflow-wrap:anywhere}
+.mini img{width:56px;height:56px;object-fit:cover;border-radius:6px}
+.out{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:14px}
+.toast{position:fixed;inset-inline:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));margin-inline:auto;max-width:460px;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:10px;z-index:60;font-size:14px;text-align:center}
+.toast[hidden]{display:none}
+.foot{color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (max-width:760px){.hero{grid-template-columns:minmax(0,1fr)}.card,.item{padding:16px}}
+</style>
+<div id="root"></div>
+<div class="scrim" id="scrim" hidden><div class="dlg" id="dlg" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" hidden role="status"></div>
+<script type="application/json" id="data">{"v":1,"pw":"","updated":"2026-10-12T18:00:00.000Z","case":[{"id":"c1","title":"გულის უკმარისობის ნიშნები","topic":"კარდიოლოგია","scenario":"74 წლის ქალს 3 დღეში 3 კგ მოემატა. ღამით სუნთქვა უჭირს და რამდენიმე ბალიშით სძინავს.","options":["სუნთქვის სიხშირე, SpO₂, ფილტვების აუსკულტაცია და შეშუპების შეფასება","მხოლოდ ტემპერატურა","მხოლოდ მადა","მხოლოდ კანის ფერი"],"correct":0,"explanation":"ეს მონაცემები მნიშვნელოვანია სითხის შეკავებისა და რესპირატორული მდგომარეობის შესაფასებლად.","img":"","video":"","added":"2026-10-12"}],"dose":[{"id":"d1","title":"ჰეპარინის დოზა","topic":"დოზირება","scenario":"დანიშნულია ჰეპარინი 5000 ერთეული კანქვეშ. ხელთ გაქვს 10 000 ერთეული/მლ. რამდენი მლ უნდა გააკეთო?","options":["0.25 მლ","0.5 მლ","1 მლ","2 მლ"],"correct":1,"explanation":"ფორმულა: საჭირო დოზა ÷ ხელმისაწვდომი დოზა = 5000 ÷ 10000 = 0.5 მლ.","img":"","video":"","added":"2026-10-12"}],"quiz":[{"id":"q1","title":"სასუნთქი სისტემა","topic":"ფიზიოლოგია","scenario":"რომელი მაჩვენებელი აფასებს სისხლის ჟანგბადით გაჯერებას?","options":["პულსი","SpO₂","არტერიული წნევა","ტემპერატურა"],"correct":1,"explanation":"SpO₂ პულსოქსიმეტრიით აფასებს ჰემოგლობინის ჟანგბადით გაჯერებას.","img":"","video":"","added":"2026-10-12"}],"sim":[{"id":"sim1","title":"მწვავე სისხლდენა და ჰემორაგიული შოკი","topic":"გადაუდებელი დახმარება","scenario":"პაციენტი შემოვიდა კრიტიკული მდგომარეობით. ფერმკრთალია, მარცხენა კიდურზე აღინიშნება აქტიური სისხლდენა, სუნთქვა გახშირებულია. აირჩიეთ სწორი ქმედება თითოეულ ზონაში.","explanation":"პრიორიტეტი: სისხლდენის კონტროლი, ჟანგბადი, ორი მსხვილი ვენური წვდომა და სწრაფი ინფუზია, უწყვეტი მონიტორინგი, ქირურგის ჩართვა.","img":"","video":"","added":"2026-10-12","vitals":{"hr":128,"sys":85,"dia":55,"spo2":91},"final":{"hr":92,"sys":115,"dia":75,"spo2":98},"steps":[{"key":"oxygen","label":"ჟანგბადი","correct":"ჟანგბადი რეზერვუარიანი ნიღბით, 10–12 ლ/წთ","wrong":["ცხვირის კანულა, 2 ლ/წთ","ჟანგბადი არ არის საჭირო"],"why":"ჰემორაგიული შოკისას ქსოვილებს ჟანგბადის მაქსიმალური მიწოდება სჭირდება."},{"key":"lab","label":"ლაბორატორია","correct":"სისხლის საერთო ანალიზი (Hb, Hct), ლაქტატი, სისხლის ჯგუფი","wrong":["მხოლოდ შარდის საერთო ანალიზი","გლუკოზის ექსპრეს-ტესტი თითიდან"],"why":"საჭიროა სისხლის დანაკარგის, პერფუზიის და ტრანსფუზიისთვის თავსებადობის შეფასება."},{"key":"monitor","label":"მონიტორი","correct":"უწყვეტი პულსოქსიმეტრია, ეკგ და არტერიული წნევის კონტროლი","wrong":["წნევის გაზომვა ყოველ 4 საათში ერთხელ","მონიტორინგი არ არის საჭირო"],"why":"არასტაბილურ პაციენტს უწყვეტი მონიტორინგი სჭირდება."},{"key":"radio","label":"რადიოლოგია","correct":"FAST ექოსკოპია მუცლის ღრუში თავისუფალი სითხის გამოსავლენად","wrong":["თავის ტვინის კომპიუტერული ტომოგრაფია","კვლევა არ არის საჭირო"],"why":"FAST სწრაფია, ლოგინთან კეთდება და შინაგანი სისხლდენის გამორიცხვაში გვეხმარება."},{"key":"doctor","label":"ექიმი","correct":"ქირურგისა და ტრავმატოლოგის სასწრაფო გამოძახება","wrong":["მხოლოდ დერმატოლოგის კონსულტაცია","დაველოდოთ პაციენტის გაუმჯობესებას"],"why":"აქტიურ სისხლდენას ხშირად ქირურგიული კონტროლი სჭირდება."},{"key":"nurse","label":"ექთნის პანელი","correct":"ABCDE პრიორიტეტული შეფასება და სისხლდენის კონტროლი","wrong":["პაციენტის გადაყვანა პალატაში უცნობი დიაგნოზით","მხოლოდ ანამნეზის შეგროვება"],"why":"სისტემური შეფასება ცხოვრებისთვის საშიშ პრობლემებს თანმიმდევრობით აღმოაჩენს."},{"key":"infusion","label":"ინფუზია","correct":"ორი მსხვილი პერიფერიული კათეტერი (16G), თბილი კრისტალოიდები და ერითროციტული მასა","wrong":["მხოლოდ 5%-იანი გლუკოზის წვეთოვანი","ინფუზია არ არის საჭირო"],"why":"საჭიროა მოცულობის სწრაფი აღდგენა; თბილი სითხეები ჰიპოთერმიას ამცირებს."},{"key":"bleeding","label":"სისხლდენა","correct":"ტურნიკეტი ან წნევითი შეხვევა სისხლდენის ზონაზე","wrong":["მხოლოდ სპირტიანი ხელსახოცის დადება","სისხლდენის დაკვირვება ჩარევის გარეშე"],"why":"გარე სისხლდენის პირდაპირი კონტროლი უმთავრესი ნაბიჯია."},{"key":"anamnesis","label":"ანამნეზი","correct":"ტრავმის დროის, ალერგიისა და თანმხლები დაავადებების გარკვევა","wrong":["ისტორიის შეგროვება არ არის საჭირო","მხოლოდ პაციენტის პროფესიის გარკვევა"],"why":"ალერგია, მედიკამენტები და ტრავმის დრო გადაწყვეტილებებზე პირდაპირ მოქმედებს."}]}]}</script>
+<script id="app">
+(function(){
+"use strict";
+var DATA_EL=document.getElementById('data');
+var PUBLISHED=JSON.parse(DATA_EL.textContent);
+var state=JSON.parse(JSON.stringify(PUBLISHED));
+var isTeacher=false, dirty=false, view='home', tType='case', form=null, editingId=null;
+var sampleFn=null, artifactCap=null, downloadsCap=null;
+var STANDALONE=!(window.claude&&window.claude.use);
+function hash(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0,ch;i<s.length;i++){ch=s.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (4294967296*(2097151&h2)+(h1>>>0)).toString(36)}
+var aiOut=null, aiBusy=false, aiForm={type:'case',topic:''};
+var simId=null, simRun=null, dlgKey=null;
+var LS_SCORE='nsg_score_v2', LS_DRAFT='nsg_draft_v2';
+var TYPES={case:'კლინიკური ქეისი',dose:'დოზირება',quiz:'ქვიზი',sim:'სიმულაცია'};
+var VIEWS={cases:'case',dose:'dose',quiz:'quiz'};
+var STEP_KEYS=[['oxygen','ჟანგბადი'],['lab','ლაბორატორია'],['monitor','მონიტორი'],['radio','რადიოლოგია'],['doctor','ექიმი'],['nurse','ექთნის პანელი'],['infusion','ინფუზია'],['bleeding','სისხლდენა'],['anamnesis','ანამნეზი']];
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+function $(s){return document.querySelector(s)}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function uid(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,5)}
+function today(){return new Date().toISOString().slice(0,10)}
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+function lsDel(k){try{localStorage.removeItem(k)}catch(e){}}
+function safeUrl(u){u=String(u||'').trim();return /^https:\/\//i.test(u)?u:''}
+function toast(t){var el=$('#toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){el.hidden=true},3800)}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+/* ---------- scoring (per viewer, kept in this browser) ---------- */
+function getScore(){var s=lsGet(LS_SCORE,null);if(!s||typeof s!=='object')s={points:0,answered:{}};if(!s.answered)s.answered={};return s}
+function levelOf(p){if(p>=100)return{n:'კლინიკური ექსპერტი',next:null};if(p>=50)return{n:'ოსტატი ექთანი',next:100};return{n:'დამწყები',next:50}}
+function addPoints(id,ok,sel){
+  var s=getScore();
+  if(s.answered[id]!=null)return;
+  s.answered[id]={sel:sel,ok:ok};
+  s.points=Math.max(0,s.points+(ok?15:-5));
+  lsSet(LS_SCORE,s);
+}
+
+/* ---------- vitals ---------- */
+function vitClass(k,v){
+  if(k==='hr')return v>120||v<45?'crit':(v>100||v<55?'warn':'ok');
+  if(k==='sys')return v<90?'crit':(v<100?'warn':'ok');
+  return v<92?'crit':(v<95?'warn':'ok');
+}
+function vitalsHtml(v){
+  return '<div class="vitals">'+
+   '<div class="vit '+vitClass('hr',v.hr)+'"><span>HR · წთ-ში</span><b>'+v.hr+'</b></div>'+
+   '<div class="vit '+vitClass('sys',v.sys)+'"><span>BP · მმ.ვწყ.სვ.</span><b>'+v.sys+'/'+v.dia+'</b></div>'+
+   '<div class="vit '+vitClass('spo2',v.spo2)+'"><span>SpO₂</span><b>'+v.spo2+'%</b></div></div>';
+}
+var ECG='<svg class="ecg" viewBox="0 0 600 96" preserveAspectRatio="none" aria-hidden="true"><path d="M0 56 H70 L82 56 L90 40 L98 56 H130 L142 62 L152 12 L164 88 L174 56 H230 L242 50 L256 56 H330 L342 56 L350 40 L358 56 H390 L402 62 L412 12 L424 88 L434 56 H490 L502 50 L516 56 H600"/></svg>';
+
+/* ---------- header ---------- */
+function headerHtml(){
+  var s=getScore(),lv=levelOf(s.points);
+  var tabs=[['home','მთავარი'],['cases','ქეისები'],['sim','გადაუდებელი'],['dose','დოზირება'],['quiz','ქვიზები']];
+  var th=tabs.map(function(t){
+    var cls='tab'+(t[0]==='sim'?' er':'');
+    return '<button class="'+cls+'" data-act="nav" data-v="'+t[0]+'"'+(view===t[0]?' aria-current="page"':'')+'>'+(t[0]==='sim'?'<span class="dot"></span>':'')+t[1]+'</button>';
+  }).join('');
+  if(isTeacher)th+='<button class="tab push" data-act="nav" data-v="teacher"'+(view==='teacher'?' aria-current="page"':'')+'>მასალის მართვა'+(dirty?' •':'')+'</button>';
+  return '<header class="top"><div class="top-in"><div class="brand-row"><div class="brand">'+
+   '<svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" stroke="currentColor" stroke-width="2"/><path d="M5 18h6l3-7 5 14 3-7h7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+   '<div><b>Nurse Skills Georgia</b><small>ავტორი: მაია ჯაჭვაძე</small></div></div>'+
+   '<div class="chips">'+(isTeacher?'<span class="chip t">მასწავლებლის რეჟიმი</span>'+(STANDALONE?'<button class="chip" data-act="logout">გასვლა</button>':''):'<span class="chip" title="ქულები ინახება ამ მოწყობილობაზე">'+s.points+' ქულა · '+esc(lv.n)+'</span>'+(STANDALONE?'<button class="chip" data-act="login">მასწავლებელი</button>':''))+'</div></div>'+
+   '<nav class="tabs" aria-label="განყოფილებები">'+th+'</nav></div></header>';
+}
+
+/* ---------- home ---------- */
+function allItems(){
+  var out=[];['case','dose','quiz','sim'].forEach(function(t){(state[t]||[]).forEach(function(x){out.push({t:t,x:x})})});
+  return out;
+}
+function homeHtml(){
+  var nC=state.case.length,nD=state.dose.length,nQ=state.quiz.length,nS=state.sim.length;
+  var recent=allItems().sort(function(a,b){return String(b.x.added||'').localeCompare(String(a.x.added||''))}).slice(0,5);
+  var vin={hr:72,sys:118,dia:76,spo2:98};
+  var rec=recent.length?recent.map(function(r){
+    var v=r.t==='sim'?'sim':(r.t==='case'?'cases':r.t);
+    return '<button class="mini" data-act="nav" data-v="'+v+'" style="text-align:start;width:100%"><div><span class="eyebrow">'+TYPES[r.t]+(r.x.topic?' · '+esc(r.x.topic):'')+'</span><b>'+esc(r.x.title)+'</b></div><span class="muted" style="font-size:12px;font-family:var(--f-mono)">'+esc(r.x.added||'')+'</span></button>';
+  }).join(''):'<div class="empty">მასალა ჯერ არ დამატებულა.</div>';
+  return '<section class="hero"><div class="hero-copy"><span class="eyebrow">საექთნო სწავლების სივრცე</span>'+
+   '<h1>იფიქრე როგორც კლინიცისტმა</h1>'+
+   '<p class="lead">ისწავლე, შეაფასე და იმოქმედე: რეალური ქეისები, გადაუდებელი დახმარების სიმულატორი და დოზირების ამოცანები, ერთ სივრცეში.</p>'+
+   '<div class="row"><button class="btn warn" data-act="nav" data-v="sim">გადაუდებელი სიმულატორი</button><button class="btn ghost" data-act="nav" data-v="cases">ქეისებზე გადასვლა</button></div></div>'+
+   '<div class="mon"><div class="mon-head"><span>პაციენტის მონიტორი · ნიმუში</span><span>II</span></div>'+ECG+vitalsHtml(vin)+'</div></section>'+
+   '<section class="stack"><div class="sec-h"><h2>მიმართულებები</h2></div><div class="areas">'+
+   '<button class="area er" data-act="nav" data-v="sim"><h3>გადაუდებელი სიმულატორი</h3><p class="muted">ცხრა გადაწყვეტილება შოკში მყოფი პაციენტისთვის</p><span class="n">'+nS+' სცენარი</span></button>'+
+   '<button class="area" data-act="nav" data-v="cases"><h3>კლინიკური ქეისები</h3><p class="muted">რეალური სიტუაციები და გადაწყვეტილებები</p><span class="n">'+nC+' ქეისი</span></button>'+
+   '<button class="area" data-act="nav" data-v="dose"><h3>დოზირება</h3><p class="muted">მედიკამენტის უსაფრთხო გამოთვლა</p><span class="n">'+nD+' ამოცანა</span></button>'+
+   '<button class="area" data-act="nav" data-v="quiz"><h3>ქვიზები</h3><p class="muted">თეორიული ცოდნის შემოწმება</p><span class="n">'+nQ+' კითხვა</span></button></div></section>'+
+   '<section class="stack"><div class="sec-h"><h2>ახლახან დამატებული</h2></div>'+rec+'</section>';
+}
+
+/* ---------- MCQ lists ---------- */
+var search='';
+function mediaHtml(x){
+  var h='';
+  if(x.img&&/^data:image\//.test(x.img))h+='<img class="pic" alt="" src="'+x.img+'">';
+  var u=safeUrl(x.video);
+  if(u)h+='<div><a class="btn ghost sm" href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">ვიდეოს ნახვა ახალ ფანჯარაში</a></div>';
+  return h;
+}
+function itemHtml(t,x,i){
+  var ans=getScore().answered[x.id];
+  var prefix=t==='case'?'ქეისი':t==='dose'?'ამოცანა':'კითხვა';
+  var opts=x.options.map(function(o,j){
+    var cls='opt';
+    if(ans){if(j===x.correct)cls+=' good';else if(j===ans.sel)cls+=' bad'}
+    return '<button class="'+cls+'" data-act="ans" data-id="'+esc(x.id)+'" data-i="'+j+'"'+(ans?' disabled':'')+'><i>'+String.fromCharCode(65+j)+'</i><span>'+esc(o)+'</span></button>';
+  }).join('');
+  var fb=ans?'<div class="fb '+(ans.ok?'good':'bad')+'"><b>'+(ans.ok?'სწორია.':'არასწორია.')+'</b> '+esc(x.explanation)+'</div>':'';
+  return '<article class="item" id="it-'+esc(x.id)+'"><div class="meta"><span class="pill">'+prefix+' '+(i+1)+'</span>'+(x.topic?'<span class="pill a">'+esc(x.topic)+'</span>':'')+'</div>'+
+   '<h3>'+esc(x.title)+'</h3><p>'+esc(x.scenario)+'</p>'+mediaHtml(x)+'<div class="opts">'+opts+'</div>'+fb+'</article>';
+}
+function listHtml(v){
+  var t=VIEWS[v],arr=state[t]||[];
+  var titles={case:['კლინიკური ქეისები','აირჩიე ყველაზე სწორი ქმედება'],dose:['დოზირების ამოცანები','გამოთვალე და შეამოწმე უსაფრთხოდ'],quiz:['ქვიზები','შეამოწმე თეორიული ცოდნა']};
+  var q=search.trim().toLowerCase();
+  var shown=arr.map(function(x,i){return{x:x,i:i}}).filter(function(o){
+    return !q||(o.x.title+' '+o.x.scenario+' '+(o.x.topic||'')).toLowerCase().indexOf(q)>=0});
+  var body=shown.length?shown.map(function(o){return itemHtml(t,o.x,o.i)}).join(''):'<div class="empty">'+(arr.length?'ძიებას შედეგი არ აქვს.':'ამ განყოფილებაში მასალა ჯერ არ არის.')+'</div>';
+  return '<section class="stack"><div class="sec-h"><div><h2>'+titles[t][0]+'</h2><p class="muted">'+titles[t][1]+'</p></div>'+
+   (arr.length>3?'<input class="search" id="searchBox" placeholder="ძიება სათაურში ან თემაში" value="'+esc(search)+'" data-f="search">':'')+'</div>'+body+'</section>';
+}
+
+/* ---------- ER simulator ---------- */
+function curSim(){
+  var list=state.sim||[];
+  if(!list.length)return null;
+  return list.filter(function(s){return s.id===simId})[0]||list[0];
+}
+function newRun(sim){
+  var o={};
+  (sim.steps||[]).forEach(function(st){
+    var opts=[{t:st.correct,ok:true}].concat((st.wrong||[]).filter(Boolean).map(function(w){return{t:w,ok:false}}));
+    o[st.key]={opts:shuffle(opts),sel:-1};
+  });
+  return{id:sim.id,steps:o,done:false,outcome:null};
+}
+function ensureRun(){
+  var s=curSim();
+  if(!s)return null;
+  if(!simRun||simRun.id!==s.id)simRun=newRun(s);
+  return s;
+}
+function simHtml(){
+  var s=ensureRun();
+  if(!s)return '<section class="stack"><h2>გადაუდებელი სიმულატორი</h2><div class="empty">სცენარი ჯერ არ არის დამატებული.</div></section>';
+  var vit=simRun.outcome?simRun.outcome.vitals:s.vitals;
+  var sel=(state.sim.length>1)?'<label class="f" style="max-width:360px">სცენარი<select class="in" data-f="simPick">'+state.sim.map(function(x){return '<option value="'+esc(x.id)+'"'+(x.id===s.id?' selected':'')+'>'+esc(x.title)+'</option>'}).join('')+'</select></label>':'';
+  var tiles=(s.steps||[]).map(function(st){
+    var r=simRun.steps[st.key],set=r&&r.sel>=0;
+    return '<button class="tile'+(set?' set':'')+'" data-act="simOpen" data-k="'+esc(st.key)+'"'+(simRun.done?' disabled':'')+'><b>'+esc(st.label)+'</b><small>'+(set?'არჩევანი შენახულია':'აირჩიე ქმედება')+'</small></button>';
+  }).join('');
+  var picked=(s.steps||[]).filter(function(st){return simRun.steps[st.key].sel>=0}).length;
+  var total=(s.steps||[]).length;
+  return '<section class="stack"><div class="sec-h"><div><span class="pill r">გადაუდებელი განყოფილება</span><h2 style="margin-top:6px">'+esc(s.title)+'</h2></div>'+
+   '<button class="btn ghost sm" data-act="simReset">თავიდან დაწყება</button></div>'+sel+
+   '<div class="simbar"><div class="mon-head"><span>პაციენტის მონიტორი'+(simRun.outcome?' · შედეგი':' · მიმდინარე')+'</span><span>სიმულაცია</span></div>'+ECG+vitalsHtml(vit)+'</div>'+
+   '<div class="card patient"><p>'+esc(s.scenario)+'</p>'+mediaHtml(s)+'</div>'+
+   '<div class="stack"><div class="sec-h"><h3>ჩარევები</h3><span class="muted" style="font-family:var(--f-mono);font-size:13px">'+picked+' / '+total+'</span></div><div class="tiles">'+tiles+'</div></div>'+
+   '<div class="card row" style="justify-content:space-between"><p class="muted" style="max-width:56ch">აირჩიე ქმედება ყველა ზონაში, შემდეგ შეამოწმე შედეგი. სწორი პასუხები დასრულებამდე არ ჩანს.</p><button class="btn" data-act="simEval"'+(simRun.done?' disabled':'')+'>შედეგის შემოწმება</button></div></section>';
+}
+function openSimDlg(key){
+  var s=curSim(),st=s.steps.filter(function(x){return x.key===key})[0],r=simRun.steps[key];
+  dlgKey=key;
+  var body='<h3>'+esc(st.label)+'</h3><p class="muted">აირჩიე ყველაზე სწორი ქმედება ამ ზონისთვის.</p>'+
+   r.opts.map(function(o,i){return '<label class="choice"><input type="radio" name="simOpt" value="'+i+'"'+(r.sel===i?' checked':'')+'><span>'+esc(o.t)+'</span></label>'}).join('')+
+   '<div class="row"><button class="btn" data-act="simSave">შენახვა</button><button class="btn ghost" data-act="dlgClose">გაუქმება</button></div>';
+  showDlg(body);
+}
+function evalSim(){
+  var s=curSim(),total=s.steps.length,missing=s.steps.filter(function(st){return simRun.steps[st.key].sel<0}).length;
+  if(missing){toast('ჯერ აირჩიე ქმედება დარჩენილ ზონებში: '+missing);return}
+  var score=0,rows='';
+  s.steps.forEach(function(st){
+    var r=simRun.steps[st.key],ch=r.opts[r.sel],ok=ch.ok;if(ok)score++;
+    rows+='<div class="rev '+(ok?'good':'bad')+'"><b>'+esc(st.label)+(ok?' · სწორია':' · არასწორია')+'</b><span>შენი არჩევანი: '+esc(ch.t)+'</span>'+(ok?'':'<span>სწორი: '+esc(st.correct)+'</span>')+(st.why?'<span class="muted">'+esc(st.why)+'</span>':'')+'</div>';
+  });
+  var i=s.vitals,f=s.final,vit,title,pillcls;
+  var ratio=score/total;
+  function lerp(a,b,k){return Math.round(a+(b-a)*k)}
+  if(ratio>=0.78){vit=f;title='პაციენტი სტაბილიზდა';pillcls='good'}
+  else if(ratio>=0.45){var k=0.4;vit={hr:lerp(i.hr,f.hr,k),sys:lerp(i.sys,f.sys,k),dia:lerp(i.dia,f.dia,k),spo2:lerp(i.spo2,f.spo2,k)};title='მდგომარეობა ნაწილობრივ გაუმჯობესდა';pillcls='warn'}
+  else{vit={hr:i.hr+10,sys:Math.max(60,i.sys-10),dia:Math.max(35,i.dia-8),spo2:Math.max(80,i.spo2-4)};title='პაციენტის მდგომარეობა გაუარესდა';pillcls='bad'}
+  simRun.done=true;simRun.outcome={vitals:vit,score:score};
+  var best=lsGet('nsg_simbest',{});if(!best[s.id]||best[s.id]<score){best[s.id]=score;lsSet('nsg_simbest',best)}
+  if(ratio>=0.78){var sc=getScore();sc.points+=15;lsSet(LS_SCORE,sc)}
+  showDlg('<h3>'+esc(title)+'</h3><p><b>'+score+' / '+total+'</b> ზონა სწორად არის არჩეული.</p>'+vitalsHtml(vit).replace(/class="vit /g,'class="vit ')+'<div class="stack">'+rows+'</div>'+(s.explanation?'<div class="fb good"><b>პროტოკოლი:</b> '+esc(s.explanation)+'</div>':'')+'<button class="btn" data-act="dlgClose">დახურვა</button>');
+  render();
+}
+
+/* ---------- dialog ---------- */
+function showDlg(html){$('#dlg').innerHTML=html;$('#scrim').hidden=false;var f=$('#dlg button,#dlg input');if(f)try{f.focus()}catch(e){}}
+function closeDlg(){$('#scrim').hidden=true;$('#dlg').innerHTML='';dlgKey=null}
+
+/* ---------- teacher ---------- */
+function blankForm(t){
+  var f={type:t,title:'',topic:'',scenario:'',img:'',video:'',explanation:'',options:['','','',''],correct:0};
+  if(t==='sim'){
+    f.vitals={hr:128,sys:85,dia:55,spo2:91};f.final={hr:92,sys:115,dia:75,spo2:98};
+    f.steps=clone(PUBLISHED.sim[0]&&PUBLISHED.sim[0].steps?PUBLISHED.sim[0].steps:[]);
+    if(!f.steps.length)f.steps=STEP_KEYS.map(function(k){return{key:k[0],label:k[1],correct:'',wrong:['',''],why:''}});
+  }
+  return f;
+}
+function inp(id,label,val,extra){return '<label class="f">'+label+'<input class="in" data-f="'+id+'" value="'+esc(val)+'" '+(extra||'')+'></label>'}
+function formHtml(){
+  if(!form)form=blankForm(tType);
+  var f=form,h='';
+  h+='<div class="row">'+['case','dose','quiz','sim'].map(function(t){return '<button class="btn sm'+(tType===t?'':' ghost')+'" data-act="tType" data-t="'+t+'">'+TYPES[t]+'</button>'}).join('')+'</div>';
+  h+='<h3>'+(editingId?'რედაქტირება':'ახალი')+': '+TYPES[tType]+'</h3>';
+  h+=inp('title','სათაური',f.title);
+  h+=inp('topic','თემა (არასავალდებულო)',f.topic,'placeholder="მაგ.: კარდიოლოგია"');
+  h+='<label class="f">'+(tType==='sim'?'პაციენტის მდგომარეობა':'სიტუაცია / კითხვა')+'<textarea class="in" data-f="scenario">'+esc(f.scenario)+'</textarea></label>';
+  h+='<div class="stack" id="imgBox">'+imgBoxHtml()+'</div>';
+  h+=inp('video','ვიდეოს ბმული (არასავალდებულო, https://...)',f.video,'inputmode="url" placeholder="https://"');
+  if(tType!=='sim'){
+    h+='<div class="grid2">'+[0,1,2,3].map(function(i){return inp('opt'+i,'პასუხი '+String.fromCharCode(65+i),f.options[i])}).join('')+'</div>';
+    h+='<label class="f">სწორი პასუხი<select class="in" data-f="correct">'+[0,1,2,3].map(function(i){return '<option value="'+i+'"'+(f.correct===i?' selected':'')+'>'+String.fromCharCode(65+i)+'</option>'}).join('')+'</select></label>';
+  }else{
+    h+='<p class="eyebrow">საწყისი სასიცოცხლო ნიშნები</p><div class="grid2">'+['hr','sys','dia','spo2'].map(function(k){return inp('v_'+k,k.toUpperCase(),f.vitals[k],'type="number"')}).join('')+'</div>';
+    h+='<p class="eyebrow">სწორი მართვის შემდეგ</p><div class="grid2">'+['hr','sys','dia','spo2'].map(function(k){return inp('fv_'+k,k.toUpperCase(),f.final[k],'type="number"')}).join('')+'</div>';
+    h+='<p class="eyebrow">ჩარევები (თითოეულში ერთი სწორი და 1–2 არასწორი ვარიანტი)</p>';
+    h+=f.steps.map(function(st,i){return '<details class="card" style="padding:12px 16px"><summary><b>'+esc(st.label)+'</b></summary><div class="stack" style="margin-top:10px">'+
+      inp('s'+i+'_correct','სწორი ქმედება',st.correct)+inp('s'+i+'_w0','არასწორი ვარიანტი 1',st.wrong[0]||'')+inp('s'+i+'_w1','არასწორი ვარიანტი 2 (არასავალდებულო)',st.wrong[1]||'')+inp('s'+i+'_why','განმარტება',st.why||'')+'</div></details>'}).join('');
+  }
+  h+='<label class="f">'+(tType==='sim'?'პროტოკოლის შეჯამება':'განმარტება სტუდენტისთვის')+'<textarea class="in" data-f="explanation">'+esc(f.explanation)+'</textarea></label>';
+  h+='<div class="row"><button class="btn" data-act="tSave">'+(editingId?'ცვლილების შენახვა დრაფტში':'დრაფტში დამატება')+'</button>'+(editingId?'<button class="btn ghost" data-act="tCancel">გაუქმება</button>':'')+'</div>';
+  return h;
+}
+function imgBoxHtml(){
+  var f=form;
+  return '<label class="f">სურათი (არასავალდებულო)<input type="file" accept="image/*" data-f="imgFile" class="in"></label>'+
+   (f.img?'<div class="row"><img src="'+f.img+'" alt="" style="width:120px;height:80px;object-fit:cover;border-radius:6px"><button class="btn ghost sm" data-act="imgClear">სურათის წაშლა</button></div>':'');
+}
+function listAdminHtml(){
+  var h='';
+  ['case','dose','quiz','sim'].forEach(function(t){
+    var arr=state[t]||[];
+    h+='<div class="stack"><h3>'+TYPES[t]+' · '+arr.length+'</h3>';
+    if(!arr.length)h+='<div class="empty">ცარიელია</div>';
+    arr.forEach(function(x,i){
+      h+='<div class="mini"><div><span class="eyebrow">'+esc(x.added||'')+(x.topic?' · '+esc(x.topic):'')+'</span><b>'+esc(x.title)+'</b></div><div class="row">'+
+        (x.img?'<img alt="" src="'+x.img+'">':'')+
+        '<button class="btn ghost sm" data-act="tUp" data-t="'+t+'" data-id="'+esc(x.id)+'"'+(i===0?' disabled':'')+' aria-label="ზემოთ">↑</button>'+
+        '<button class="btn ghost sm" data-act="tDown" data-t="'+t+'" data-id="'+esc(x.id)+'"'+(i===arr.length-1?' disabled':'')+' aria-label="ქვემოთ">↓</button>'+
+        '<button class="btn ghost sm" data-act="tEdit" data-t="'+t+'" data-id="'+esc(x.id)+'">რედაქტირება</button>'+
+        '<button class="btn ghost sm" data-act="tDel" data-t="'+t+'" data-id="'+esc(x.id)+'" style="color:var(--signal);border-color:var(--signal)">წაშლა</button></div></div>';
+    });
+    h+='</div>';
+  });
+  return h;
+}
+function sizeMb(){return (JSON.stringify(state).length/1048576)}
+function aiHtml(){
+  var h='<div class="card stack"><div><h3>AI ასისტენტი</h3><p class="muted">შექმნის დრაფტს, რომელსაც გამოქვეყნებამდე შეგიძლია გადაამოწმო და შეცვალო. კლინიკური სიზუსტე ყოველთვის პედაგოგმა უნდა დაადასტუროს.</p></div>';
+  if(!sampleFn)return '';
+  h+='<div class="grid2"><label class="f">ტიპი<select class="in" data-f="aiType">'+[['case','კლინიკური ქეისი'],['dose','დოზირების ამოცანა'],['quiz','ქვიზის კითხვა'],['explain','თემის ახსნა'],['media','ვიზუალის იდეა']].map(function(o){return '<option value="'+o[0]+'"'+(aiForm.type===o[0]?' selected':'')+'>'+o[1]+'</option>'}).join('')+'</select></label>'+
+    inp('aiTopic','თემა',aiForm.topic,'placeholder="მაგ.: ინსულინის დოზირება"')+'</div>';
+  h+='<div><button class="btn" data-act="aiGen"'+(aiBusy?' disabled':'')+'>'+(aiBusy?'იქმნება...':'გენერაცია')+'</button></div>';
+  if(aiOut){
+    if(aiOut.item){
+      var x=aiOut.item;
+      h+='<div class="item"><h3>'+esc(x.title)+'</h3><p>'+esc(x.scenario)+'</p><div class="opts">'+x.options.map(function(o,i){return '<div class="opt'+(i===x.correct?' good':'')+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+esc(o)+'</span></div>'}).join('')+'</div><div class="fb good">'+esc(x.explanation)+'</div><div><button class="btn" data-act="aiAdd">დრაფტში დამატება</button></div></div>';
+    }else h+='<div class="out">'+esc(aiOut.text)+'</div>';
+  }
+  return h+'</div>';
+}
+function teacherHtml(){
+  var mb=sizeMb();
+  return '<section class="stack"><div class="sec-h"><div><h2>მასალის მართვა</h2><p class="muted">'+(STANDALONE?'სამუშაო წესი: დაამატე მასალა და დააჭირე „დრაფტში დამატება“. შემდეგ ქვედა ღილაკით „ფაილის ჩამოტვირთვა“ ჩამოტვირთე index.html. GitHub Pages-ზე განახლებისთვის გახსენი შენი რეპოზიტორია, ატვირთე ეს index.html ძველის ნაცვლად და დაადასტურე Commit changes. სტუდენტები ახალ მასალას განახლების შემდეგ ნახავენ.':'ცვლილებები ჯერ დრაფტში ინახება. სტუდენტები მათ ხედავენ მხოლოდ გამოქვეყნების შემდეგ.')+'</p></div></div>'+
+   '<div class="card stack" id="formCard">'+formHtml()+'</div>'+aiHtml()+
+   '<div class="stack">'+listAdminHtml()+'</div>'+
+   '<div class="card stack"><h3>სარეზერვო ასლი</h3><p class="muted">გვერდის მოცულობა: '+mb.toFixed(2)+' / 16 მბ. სურათები ავტომატურად მცირდება.</p><div class="row"><button class="btn ghost" data-act="exportJson">ჩამოტვირთვა</button><label class="btn ghost" style="cursor:pointer">ძველი ან სარეზერვო ფაილის ჩატვირთვა<input type="file" accept="application/json,.json" data-f="importFile" hidden></label></div></div></section>';
+}
+function draftBarHtml(){
+  if(!isTeacher||!dirty)return '';
+  return '<div class="draftbar"><span>გამოუქვეყნებელი ცვლილებები</span><div class="row"><button class="btn ghost sm" data-act="discard">გაუქმება</button><button class="btn sm" data-act="publish">'+(STANDALONE?'ფაილის ჩამოტვირთვა':'გამოქვეყნება სტუდენტებისთვის')+'</button></div></div>';
+}
+
+/* ---------- render ---------- */
+function render(){
+  var main='';
+  if(view==='home')main=homeHtml();
+  else if(VIEWS[view])main=listHtml(view);
+  else if(view==='sim')main=simHtml();
+  else if(view==='teacher'&&isTeacher)main=teacherHtml();
+  else main=homeHtml();
+  var focusId=document.activeElement&&document.activeElement.id==='searchBox'?'searchBox':null;
+  $('#root').innerHTML='<div class="app">'+headerHtml()+'<main class="wrap stack" style="gap:24px">'+main+'</main>'+draftBarHtml()+
+   '<footer class="wrap foot"><span>Nurse Skills Georgia · ავტორი: მაია ჯაჭვაძე</span><span>© 2026</span></footer></div>';
+  if(focusId){var e=$('#searchBox');if(e){e.focus();var l=e.value.length;try{e.setSelectionRange(l,l)}catch(x){}}}
+}
+function setDirty(){dirty=true;lsSet(LS_DRAFT,state)}
+
+/* ---------- image helper ---------- */
+function compress(file){
+  return new Promise(function(res,rej){
+    var url=URL.createObjectURL(file),img=new Image();
+    img.onload=function(){
+      var max=1280,w=img.naturalWidth,h=img.naturalHeight,k=Math.min(1,max/Math.max(w,h));
+      var c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(h*k);
+      var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(img,0,0,c.width,c.height);
+      URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',0.8));
+    };
+    img.onerror=function(){URL.revokeObjectURL(url);rej(new Error('bad'))};
+    img.src=url;
+  });
+}
+
+/* ---------- publish ---------- */
+function buildDoc(){
+  var json=JSON.stringify(state).replace(/</g,'\\u003c');
+  var css=document.getElementById('appstyle').textContent;
+  var js=document.getElementById('app').textContent;
+  var font=document.getElementById('fontlink').outerHTML;
+  var reset=':root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}';
+  return '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>'+reset+'</style></head><body>'+
+   '<title>Nurse Skills Georgia</title>'+font+'<style id="appstyle">'+css+'</style>'+
+   '<div id="root"></div><div class="scrim" id="scrim" hidden><div class="dlg" id="dlg" role="dialog" aria-modal="true"></div></div><div class="toast" id="toast" hidden role="status"></div>'+
+   '<script type="application/json" id="data">'+json+'<\/script><script id="app">'+js+'<\/script></body></html>';
+}
+function saveLocalFile(){
+  state.updated=new Date().toISOString();
+  var blob=new Blob([buildDoc()],{type:'text/html'});
+  var url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='index.html';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(function(){URL.revokeObjectURL(url)},2000);
+  PUBLISHED=clone(state);dirty=false;lsDel(LS_DRAFT);render();
+  toast('ფაილი ჩამოიტვირთა. GitHub Pages-ზე განახლებისთვის ატვირთე index.html რეპოზიტორიაში ძველის ნაცვლად და დაადასტურე Commit changes.');
+}
+function openLogin(){
+  var first=!state.pw;
+  showDlg('<h3>'+(first?'მასწავლებლის პაროლის შექმნა':'მასწავლებლის შესვლა')+'</h3><p class="muted">'+(first?'ჩაწერე პაროლი, რომელსაც შესასვლელად გამოიყენებ. ეს მარტივი დაცვაა: პაროლი ფაილში ინახება.':'ჩაწერე მასწავლებლის პაროლი.')+'</p><input class="in" id="pwIn" type="password" autocomplete="off"><div class="row"><button class="btn" data-act="loginGo">'+(first?'შექმნა და შესვლა':'შესვლა')+'</button><button class="btn ghost" data-act="dlgClose">გაუქმება</button></div>');
+}
+function loginGo(){
+  var v=($('#pwIn')||{}).value||'';
+  if(v.length<4){toast('პაროლი მინიმუმ 4 სიმბოლო უნდა იყოს.');return}
+  if(!state.pw){state.pw=hash(v);setDirty()}
+  else if(hash(v)!==state.pw){toast('პაროლი არასწორია.');return}
+  isTeacher=true;
+  var d=lsGet(LS_DRAFT,null);
+  if(d&&d.case&&d.dose&&d.quiz&&d.sim&&d.pw===state.pw&&JSON.stringify(d)!==JSON.stringify(state)){state=d;dirty=true}
+  closeDlg();view='teacher';render();
+}
+async function publish(){
+  if(STANDALONE){saveLocalFile();return}
+  if(!artifactCap){toast('გამოქვეყნება ამ ხედში მიუწვდომელია.');return}
+  if(sizeMb()>14){toast('მასალა ძალიან დიდია. წაშალე რამდენიმე სურათი.');return}
+  state.updated=new Date().toISOString();
+  var btn=document.querySelector('[data-act="publish"]');if(btn){btn.disabled=true;btn.textContent='ქვეყნდება...'}
+  try{
+    lsDel(LS_DRAFT);
+    await artifactCap.publish(buildDoc());
+  }catch(e){
+    lsSet(LS_DRAFT,state);
+    var c=e&&e.code;
+    if(c==='conflict')toast('გვერდი სხვა ვერსიით განახლდა. გვერდი თავიდან ჩაიტვირთება.');
+    else if(c==='not_writer'||c==='not_granted')toast('გამოქვეყნების უფლება მხოლოდ გვერდის ავტორს აქვს.');
+    else if(c==='too_large')toast('გვერდი ძალიან დიდია. შეამცირე სურათები.');
+    else if(c==='rate_limited')toast('ძალიან ხშირად აქვეყნებ. რამდენიმე წამის შემდეგ სცადე.');
+    else toast('გამოქვეყნება ვერ მოხერხდა. დრაფტი შენახულია, სცადე თავიდან.');
+    render();
+  }
+}
+
+/* ---------- AI ---------- */
+async function runAi(){
+  var topic=aiForm.topic.trim();
+  if(!topic){toast('ჩაწერე თემა.');return}
+  aiBusy=true;aiOut=null;render();
+  var t=aiForm.type,p;
+  var shape='{"title":"...","scenario":"...","options":["...","...","...","..."],"correct":0,"explanation":"..."}';
+  try{
+    if(t==='case'||t==='quiz'||t==='dose'){
+      var what=t==='case'?'საექთნო კლინიკური ქეისი რეალური პაციენტის სიტუაციით':t==='dose'?'მედიკამენტის დოზის გამოთვლის ამოცანა, სადაც პასუხი ზუსტად გამოითვლება და განმარტებაში ნაჩვენებია ფორმულა':'საექთნო ტესტური კითხვა';
+      p='შენ ხარ გამოცდილი საექთნო პედაგოგი. შექმენი '+what+' ქართულ ენაზე თემაზე: "'+topic+'". ზუსტად 4 პასუხის ვარიანტი, ერთი სწორი, დანარჩენი დამაჯერებელი. დააბრუნე მხოლოდ JSON ამ სტრუქტურით: '+shape+'. correct არის სწორი ვარიანტის ინდექსი 0-დან 3-მდე. არ გამოიყენო markdown.';
+      var v=await sampleFn.json(p,{cache:false});
+      if(!v||!Array.isArray(v.options)||v.options.length<2||typeof v.correct!=='number')throw new Error('format');
+      var ops=v.options.slice(0,4).map(String);while(ops.length<4)ops.push('—');
+      var idx=shuffle([0,1,2,3]);var no=idx.map(function(i){return ops[i]});var nc=idx.indexOf(v.correct);
+      aiOut={item:{type:t,title:String(v.title||topic),scenario:String(v.scenario||''),options:no,correct:nc<0?0:nc,explanation:String(v.explanation||'')}};
+    }else{
+      p=t==='explain'?'ახსენი საექთნო სტუდენტებისთვის ქართულად, გასაგებად და პრაქტიკული რეკომენდაციებით თემა: "'+topic+'".':'აღწერე ქართულად და ინგლისურად, რა უნდა ჩანდეს სასწავლო ფოტოში ან ვიდეოში თემაზე: "'+topic+'". მიუთითე კადრი, კლინიკური დეტალები და უსაფრთხოების წესები.';
+      var r=await sampleFn(p,{cache:false});
+      aiOut={text:r.text};
+    }
+  }catch(e){
+    var c=e&&e.code;
+    toast(c==='not_granted'?'AI გენერაციის ნებართვა არ არის მიცემული.':c==='rate_limited'?'ძალიან ხშირი მოთხოვნაა. ცოტა ხანში სცადე.':'გენერაცია ვერ მოხერხდა. სცადე თავიდან.');
+  }
+  aiBusy=false;render();
+}
+
+/* ---------- import / export ---------- */
+function normItem(x,t){
+  if(!x||typeof x!=='object'||!x.title)return null;
+  var o={id:String(x.id||uid(t)),title:String(x.title),topic:String(x.topic||''),scenario:String(x.scenario||''),explanation:String(x.explanation||''),img:'',video:safeUrl(x.video),added:String(x.added||today())};
+  var m=String(x.img||x.media||'');if(/^data:image\//.test(m))o.img=m;
+  if(t==='sim'){
+    var tpl=PUBLISHED.sim[0];
+    o.vitals=x.vitals||clone(tpl.vitals);o.final=x.final||clone(tpl.final);
+    o.steps=Array.isArray(x.steps)&&x.steps.length?x.steps:clone(tpl.steps);
+  }else{
+    if(!Array.isArray(x.options)||x.options.length<2)return null;
+    o.options=x.options.map(String);o.correct=Math.max(0,Math.min(o.options.length-1,+x.correct||0));
+  }
+  return o;
+}
+function importJson(txt){
+  var obj=JSON.parse(txt),m=obj&&obj.materials?obj.materials:obj,add=0,skipVideo=0;
+  ['case','dose','quiz','sim'].forEach(function(t){
+    (m&&Array.isArray(m[t])?m[t]:[]).forEach(function(x){
+      if(x&&typeof x.media==='string'&&/^data:video\//.test(x.media))skipVideo++;
+      var n=normItem(x,t);if(!n)return;
+      if(state[t].some(function(e){return e.id===n.id||(e.title===n.title&&e.scenario===n.scenario)}))return;
+      state[t].push(n);add++;
+    });
+  });
+  if(add){setDirty()}
+  toast(add?('დაემატა '+add+' ელემენტი დრაფტში.'+(skipVideo?' ატვირთული ვიდეო ფაილები ვერ გადმოვიდა ('+skipVideo+'), ჩაწერე ბმული.':'')):'ახალი მასალა ვერ მოიძებნა.');
+  render();
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-act]');
+  if(e.target.id==='scrim'){closeDlg();return}
+  if(!t)return;
+  var a=t.dataset.act,id=t.dataset.id,ty=t.dataset.t;
+  if(a==='nav'){view=t.dataset.v;if(view!=='teacher')search='';render();window.scrollTo(0,0);return}
+  if(a==='ans'){
+    var arr=[];['case','dose','quiz'].forEach(function(k){arr=arr.concat(state[k])});
+    var x=arr.filter(function(o){return o.id===id})[0];if(!x)return;
+    var i=+t.dataset.i;addPoints(id,i===x.correct,i);
+    var y=window.scrollY;render();window.scrollTo(0,y);return;
+  }
+  if(a==='simOpen'){openSimDlg(t.dataset.k);return}
+  if(a==='simSave'){
+    var r=document.querySelector('input[name="simOpt"]:checked');
+    if(!r){toast('აირჩიე ერთ-ერთი ვარიანტი.');return}
+    simRun.steps[dlgKey].sel=+r.value;closeDlg();var yy=window.scrollY;render();window.scrollTo(0,yy);return;
+  }
+  if(a==='simEval'){evalSim();return}
+  if(a==='simReset'){simRun=null;render();return}
+  if(a==='dlgClose'){closeDlg();return}
+  if(a==='login'){openLogin();return}
+  if(a==='logout'){isTeacher=false;if(view==='teacher')view='home';render();return}
+  if(a==='loginGo'){loginGo();return}
+  if(!isTeacher)return;
+  if(a==='tType'){tType=ty;editingId=null;form=blankForm(ty);render();return}
+  if(a==='tCancel'){editingId=null;form=blankForm(tType);render();return}
+  if(a==='imgClear'){form.img='';$('#imgBox').innerHTML=imgBoxHtml();return}
+  if(a==='tSave'){saveForm();return}
+  if(a==='tEdit'){
+    var it=state[ty].filter(function(o){return o.id===id})[0];if(!it)return;
+    tType=ty;editingId=id;form=clone(it);form.type=ty;
+    if(ty!=='sim'){form.options=(form.options||[]).concat(['','','','']).slice(0,4)}
+    form.topic=form.topic||'';form.video=form.video||'';form.img=form.img||'';
+    render();window.scrollTo(0,0);return;
+  }
+  if(a==='tDel'){
+    if(t.dataset.arm!=='1'){t.dataset.arm='1';t.textContent='დაადასტურე წაშლა';return}
+    state[ty]=state[ty].filter(function(o){return o.id!==id});setDirty();render();return;
+  }
+  if(a==='tUp'||a==='tDown'){
+    var ls=state[ty],ix=ls.findIndex(function(o){return o.id===id}),j=a==='tUp'?ix-1:ix+1;
+    if(ix<0||j<0||j>=ls.length)return;var tmp=ls[ix];ls[ix]=ls[j];ls[j]=tmp;setDirty();render();return;
+  }
+  if(a==='publish'){publish();return}
+  if(a==='discard'){
+    if(t.dataset.arm!=='1'){t.dataset.arm='1';t.textContent='დაადასტურე გაუქმება';return}
+    state=clone(PUBLISHED);dirty=false;lsDel(LS_DRAFT);form=null;editingId=null;render();return;
+  }
+  if(a==='aiGen'){runAi();return}
+  if(a==='aiAdd'&&aiOut&&aiOut.item){
+    var it2=aiOut.item,tt=it2.type;
+    state[tt].push({id:uid(tt),title:it2.title,topic:aiForm.topic.trim(),scenario:it2.scenario,options:it2.options,correct:it2.correct,explanation:it2.explanation,img:'',video:'',added:today()});
+    aiOut=null;setDirty();toast('დაემატა დრაფტში. გამოსაქვეყნებლად დააჭირე ქვედა ღილაკს.');render();return;
+  }
+  if(a==='exportJson'){
+    var blob=new Blob([JSON.stringify({app:'Nurse Skills Georgia',version:1,exportedAt:new Date().toISOString(),materials:{case:state.case,dose:state.dose,quiz:state.quiz,sim:state.sim}},null,2)],{type:'application/json'});
+    if(STANDALONE){var u2=URL.createObjectURL(blob),a2=document.createElement('a');a2.href=u2;a2.download='nurse-skills-backup-'+today()+'.json';document.body.appendChild(a2);a2.click();a2.remove();setTimeout(function(){URL.revokeObjectURL(u2)},2000);toast('ფაილი ჩამოიტვირთა.');return}
+    if(downloadsCap){
+      downloadsCap.save({filename:'nurse-skills-georgia-backup-'+today()+'.json',data:blob}).then(function(){toast('ფაილი შენახულია.')}).catch(function(err){if(!err||err.code!=='declined')toast('ჩამოტვირთვა ვერ მოხერხდა.')});
+      return;
+    }
+    showDlg('<h3>სარეზერვო ასლი</h3><p class="muted">დააკოპირე ტექსტი და ჩასვი ახალ ფაილში (მაგ.: Notepad), შეინახე როგორც backup.json.</p><textarea class="in" id="bk" readonly style="min-height:200px;font-family:var(--f-mono);font-size:12px"></textarea><div class="row"><button class="btn" data-act="copyJson">კოპირება</button><button class="btn ghost" data-act="dlgClose">დახურვა</button></div>');
+    $('#bk').value=JSON.stringify({app:'Nurse Skills Georgia',version:1,exportedAt:new Date().toISOString(),materials:{case:state.case,dose:state.dose,quiz:state.quiz,sim:state.sim}});
+    return;
+  }
+  if(a==='copyJson'){
+    var bk=$('#bk');if(!bk)return;bk.select();
+    var done=function(){toast('დაკოპირდა.')};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(bk.value).then(done).catch(function(){toast('მონიშნულია, დააჭირე Ctrl+C.')})}
+    else toast('მონიშნულია, დააჭირე Ctrl+C.');
+    return;
+  }
+});
+function saveForm(){
+  var f=form,t=tType;
+  if(!f.title.trim()||!f.scenario.trim()){toast('შეავსე სათაური და აღწერა.');return}
+  var vu=f.video.trim();if(vu&&!safeUrl(vu)){toast('ვიდეოს ბმული უნდა იწყებოდეს https://-ით.');return}
+  var item={id:editingId||uid(t),title:f.title.trim(),topic:(f.topic||'').trim(),scenario:f.scenario.trim(),explanation:(f.explanation||'').trim(),img:f.img||'',video:vu,added:f.added||today()};
+  if(t==='sim'){
+    var okSteps=f.steps.every(function(s){return s.correct.trim()&&(s.wrong||[]).some(function(w){return w&&w.trim()})});
+    if(!okSteps){toast('ყველა ჩარევას სჭირდება სწორი და მინიმუმ ერთი არასწორი ვარიანტი.');return}
+    item.vitals={hr:+f.vitals.hr,sys:+f.vitals.sys,dia:+f.vitals.dia,spo2:+f.vitals.spo2};
+    item.final={hr:+f.final.hr,sys:+f.final.sys,dia:+f.final.dia,spo2:+f.final.spo2};
+    item.steps=f.steps.map(function(s){return{key:s.key,label:s.label,correct:s.correct.trim(),wrong:(s.wrong||[]).map(function(w){return(w||'').trim()}).filter(Boolean),why:(s.why||'').trim()}});
+  }else{
+    var o=f.options.map(function(x){return x.trim()});
+    if(o.some(function(x){return!x})){toast('შეავსე ოთხივე პასუხი.');return}
+    item.options=o;item.correct=+f.correct;if(!item.explanation)item.explanation='სწორი პასუხი: '+String.fromCharCode(65+item.correct)+'.';
+  }
+  if(editingId){var k=state[t].findIndex(function(x){return x.id===editingId});if(k>=0)state[t][k]=item}
+  else state[t].push(item);
+  editingId=null;form=blankForm(t);setDirty();toast('დრაფტში შეინახა. გამოსაქვეყნებლად დააჭირე ქვედა ღილაკს.');render();
+}
+function onField(e){
+  var el=e.target,k=el.dataset&&el.dataset.f;if(!k)return;
+  if(k==='search'){search=el.value;render();return}
+  if(k==='simPick'){simId=el.value;simRun=null;render();return}
+  if(k==='aiType'){aiForm.type=el.value;aiOut=null;return}
+  if(k==='aiTopic'){aiForm.topic=el.value;return}
+  if(k==='imgFile'){
+    var file=el.files&&el.files[0];if(!file||!form)return;
+    compress(file).then(function(d){form.img=d;$('#imgBox').innerHTML=imgBoxHtml();toast('სურათი დაემატა ('+Math.round(d.length/1024)+' კბ).')}).catch(function(){toast('სურათი ვერ დამუშავდა.')});
+    return;
+  }
+  if(k==='importFile'){
+    var fl=el.files&&el.files[0];if(!fl)return;
+    var rd=new FileReader();rd.onload=function(){try{importJson(rd.result)}catch(err){toast('ფაილი სწორი სარეზერვო ფაილი არ არის.')}};rd.readAsText(fl);el.value='';return;
+  }
+  if(!form)return;
+  var m;
+  if(k==='title'||k==='topic'||k==='scenario'||k==='explanation'||k==='video')form[k]=el.value;
+  else if(k==='correct')form.correct=+el.value;
+  else if((m=/^opt(\d)$/.exec(k)))form.options[+m[1]]=el.value;
+  else if((m=/^v_(\w+)$/.exec(k)))form.vitals[m[1]]=el.value;
+  else if((m=/^fv_(\w+)$/.exec(k)))form.final[m[1]]=el.value;
+  else if((m=/^s(\d+)_(correct|why|w0|w1)$/.exec(k))){
+    var st=form.steps[+m[1]];
+    if(m[2]==='w0')st.wrong[0]=el.value;else if(m[2]==='w1')st.wrong[1]=el.value;else st[m[2]]=el.value;
+  }
+}
+document.addEventListener('input',function(e){if(e.target.dataset&&e.target.dataset.f&&e.target.type!=='file')onField(e)});
+document.addEventListener('change',function(e){if(e.target.dataset&&e.target.dataset.f&&(e.target.type==='file'||e.target.tagName==='SELECT'))onField(e)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#scrim').hidden)closeDlg();if(e.key==='Enter'&&e.target.id==='pwIn')loginGo()});
+
+/* ---------- boot ---------- */
+render();
+(async function(){
+  try{
+    if(!window.claude||!window.claude.use)return;
+    var u=await window.claude.use('user');
+    if(u)isTeacher=await u.canEdit();
+    if(isTeacher){
+      artifactCap=await window.claude.use('artifact');
+      var d=lsGet(LS_DRAFT,null);
+      if(d&&d.case&&d.dose&&d.quiz&&d.sim&&JSON.stringify(d)!==JSON.stringify(PUBLISHED)){state=d;dirty=true}
+      render();
+    }
+  }catch(e){}
+})();
+})();
+</script>
+
+</body></html>
